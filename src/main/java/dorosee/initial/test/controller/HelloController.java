@@ -1,6 +1,7 @@
 package dorosee.initial.test.controller;
 
 import dorosee.initial.config.basestatus.BaseResponse;
+import dorosee.initial.test.dto.HelloDto;
 import dorosee.initial.test.entity.Hello;
 import dorosee.initial.test.repository.HelloRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -42,5 +44,16 @@ public class HelloController {
 
         List<Hello> byId = helloRepository.findAll();
         return new BaseResponse<>(null, byId);
+    }
+
+    @GetMapping("/test3")
+    public BaseResponse<List<HelloDto>> test3() {
+        Map<String, Object> map = new LinkedHashMap<>();
+
+        List<HelloDto> helloDtos = helloRepository.findAll()
+                .stream()
+                .map(HelloDto::new)
+                .collect(Collectors.toList());
+        return new BaseResponse<>(null, helloDtos);
     }
 }
